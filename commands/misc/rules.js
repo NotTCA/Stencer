@@ -21,7 +21,7 @@ module.exports = {
         ➣ If you see any mods not doing their job or abusing their powers, please report it to a higher ranked staff member.
         `)
         .addField('Rules', `
-        1. No bullying
+        1. No bullying.
         2. No NSFW, aka anything sexual.
         3. No spam is allowed.
         4. No memes in <#884356748981448726>.

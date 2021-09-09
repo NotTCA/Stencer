@@ -1,6 +1,6 @@
 const { Client, Collection, MessageEmbed } = require('discord.js')
 const client = new Client({
-    disableEveryone: true,
+    // disableEveryone: true,
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
     restTimeOffset: 0,
 })
@@ -30,7 +30,6 @@ client.on('ready', () => {
         if(randomStatus === "Spotify") statusType = 'LISTENING'
 
         client.user.setActivity(randomStatus, { type: statusType })
-        console.log(`Activity set to ${randomStatus}`)
     }, 60000)
 })
 
