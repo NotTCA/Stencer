@@ -3,16 +3,10 @@ const client = new Client({
     disableEveryone: true,
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
     restTimeOffset: 0,
-    presence: {
-        activity: {
-            name: 'TCA pressing F',
-            type: 'STREAMING',
-            url: 'https://www.youtube.com/watch?v=23LnpONVmOc'
-        }
-    }
 })
 require('discord-buttons')(client)
 client.config = require('./config.json')
+client.color = '#ffb600'
 const { prefix, ownerID } = client.config
 const keepAlive = require('./server')
 
@@ -24,13 +18,25 @@ require('./handlers/commands')(client)
 
 client.on('ready', () => {
     require('./handlers/features')(client)
-
+    
     console.log(`${client.user.tag} is now online!`)
     keepAlive()
+
+    setInterval(() => {
+        let list = ["#general chat", "everyone", "Minecraft", "osu!", "the mods in the closet", "TCA in the closet", "no", "on the tcaSMP", "the world burn", "you.", "everything go wrong", "with my dog", "YouTube", "death", "youtube.com/c/NotTCA", `${prefix}help`, "video games", "Spotify"]
+        let randomStatus = list[Math.floor(Math.random() * list.length)]
+        let statusType = 'WATCHING'
+        if(randomStatus === "Minecraft" || randomStatus === "osu!" || randomStatus === "on the tcaSMP" || randomStatus === "with my dog" || randomStatus === "video games") statusType = 'PLAYING'
+        if(randomStatus === "Spotify") statusType = 'LISTENING'
+
+        client.user.setActivity(randomStatus, { type: statusType })
+        console.log(`Activity set to ${randomStatus}`)
+    }, 60000)
 })
 
 client.on('message', async (message) => {
-    if (!message.guild || message.author.bot) return
+    if (message.author.bot) return
+    // if(message.channel.type === 'dm') message.author.send('get off my lawn')
 
     if(!message.content.startsWith(prefix)) return
     const args = message.content.slice(prefix.length).split(/ +/)
@@ -75,10 +81,10 @@ client.on('clickButton', async (button) => {
     const member = button.clicker.member
     const role = button.guild.roles.cache.get('884616331922665532')
     if(button.id === 'verify') {
-        if(member.roles.cache.has(role.id)) return button.reply.send('You are already verified. No need to click the button again.', true)
+        if(member.roles.cache.has(role.id)) return button.reply.send('You are already verified.', true)
         button.reply.send('Success. You are now verified.', true)
         await member.roles.add(role)
     } 
 })
 
-client.login(process.env.token)
+client.login(process.env.TOKEN)
